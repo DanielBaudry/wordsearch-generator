@@ -7,7 +7,7 @@ class GridGenerator:
     def generate_grid(self, width: int, length: int) -> List[List[str]]:
         return [['' for _ in range(width)] for _ in range(length)]
 
-    def insert_word_in_grid(self, word: str, grid: List[List[str]]) -> None:
+    def insert_word_in_grid_horizontally(self, word: str, grid: List[List[str]]) -> None:
         if len(word) > len(grid[0]):
             raise WordDoesNotFitException("Word does not fit in the grid")
         else:
@@ -26,3 +26,15 @@ class GridGenerator:
             for col in range(1, len(grid[0])):
                 for row in grid:
                     row[col] = ''
+
+    def insert_word_in_grid_diagonally(self, word: str, grid: List[List[str]]) -> None:
+        if len(word) > min(len(grid), len(grid[0])):
+            raise WordDoesNotFitException("Word does not fit in the grid")
+        else:
+            for i, char in enumerate(word):
+                grid[i][i] = char
+            for i in range(len(word)):
+                for j in range(len(word), len(grid[0])):
+                    grid[i][j] = ''
+                for j in range(len(word), len(grid)):
+                    grid[j][i] = ''
