@@ -16,7 +16,7 @@ def test_generate_grid():
     assert len(grid) == length
     assert all(isinstance(row, list) and len(row) == width for row in grid)
 
-def test_insert_word_in_grid():
+def test_insert_word_in_grid_horizontally():
     # Given
     generator = GridGenerator()
     width = 5
@@ -94,3 +94,41 @@ def test_insert_word_in_grid_diagonally():
             assert grid[i][j] == ''
         for j in range(len(word), length):
             assert grid[j][i] == ''
+def test_insert_word_in_grid_with_existing_word():
+    # Given
+    generator = GridGenerator()
+    width = 5
+    length = 5
+    existing_word = "hello"
+    new_word = "world"
+
+    # When
+    grid = generator.generate_grid(width, length)
+    generator.insert_word_in_grid_horizontally(existing_word, grid)
+
+    # Then
+    # Check if the existing word is inserted correctly in the grid
+    for i, char in enumerate(existing_word):
+        assert grid[0][i] == char
+
+    # Check if the new word can be inserted in an empty space
+    start_col = len(existing_word)
+    for i, char in enumerate(new_word):
+        grid[0][start_col + i] = char
+
+    # Check if the rest of the grid cells are empty
+    for row in grid:
+        for cell in row[start_col + len(new_word):]:
+            assert cell == ''
+
+    # Check if the two words have a same matching letter
+    for i in range(min(len(existing_word), len(new_word))):
+        assert existing_word[i] == new_word[i]
+
+    # Assert the full grid as text
+    expected_grid = [
+        ['h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'],
+        ['', '', '', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '', '', '']
+    ]
+    assert str(grid) == str(expected_grid)

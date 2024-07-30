@@ -29,10 +29,24 @@ class GridGenerator:
             raise WordDoesNotFitException("Word does not fit in the grid")
 
         for i, char in enumerate(word):
-            grid[start_row + i][start_col + i] = char
+            if vertical:
+                grid[start_row + i][start_col] = char
+            elif diagonal:
+                grid[start_row + i][start_col + i] = char
+            else:
+                grid[start_row][start_col + i] = char
 
         for i in range(len(word)):
-            for j in range(len(word), len(grid[0])):
-                grid[start_row + i][start_col + j] = ''
-            for j in range(len(word), len(grid)):
-                grid[start_row + j][start_col + i] = ''
+            if vertical:
+                for j in range(len(word), len(grid[0])):
+                    grid[start_row + i][start_col] = ''
+            elif diagonal:
+                for j in range(len(word), len(grid[0])):
+                    grid[start_row + i][start_col + j] = ''
+                for j in range(len(word), len(grid)):
+                    grid[start_row + j][start_col + i] = ''
+            else:
+                for j in range(len(word), len(grid[0])):
+                    grid[start_row][start_col + j] = ''
+                for j in range(len(word), len(grid)):
+                    grid[start_row + j][start_col + i] = ''
