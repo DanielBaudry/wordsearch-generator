@@ -1,7 +1,6 @@
 import pytest
 
-from src.wordsearch_generator.main import GridGenerator
-
+from wordsearch_generator.main import GridGenerator, WordDoesNotFitException
 
 def test_generate_grid():
     # Given
@@ -37,3 +36,38 @@ def test_insert_word_in_grid():
     for row in grid:
         for cell in row[len(word):]:
             assert cell == ''
+
+def test_insert_word_in_grid_raises_exception():
+    # Given
+    generator = GridGenerator()
+    width = 3
+    length = 3
+    word = "hello"
+
+    # When
+    grid = generator.generate_grid(width, length)
+
+    # Then
+    with pytest.raises(WordDoesNotFitException):
+        generator.insert_word_in_grid(word, grid)
+
+def test_insert_word_in_grid_vertically():
+    # Given
+    generator = GridGenerator()
+    width = 3
+    length = 5
+    word = "hello"
+
+    # When
+    grid = generator.generate_grid(width, length)
+    generator.insert_word_in_grid_vertically(word, grid)
+
+    # Then
+    # Check if the word is inserted correctly in the grid
+    for i, char in enumerate(word):
+        assert grid[i][0] == char
+
+    # Check if the rest of the grid cells are empty
+    for col in range(1, width):
+        for row in grid:
+            assert row[col] == ''
