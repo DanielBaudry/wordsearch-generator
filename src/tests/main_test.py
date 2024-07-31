@@ -110,3 +110,27 @@ def test_insert_word_in_grid_raises_overlap_exception():
     # Then
     with pytest.raises(WordDoesNotFitException):
         generator.insert_word_in_grid_horizontally(new_word, grid)
+def test_insert_word_in_grid_overlap_same_letter():
+    # Given
+    generator = GridGenerator()
+    width = 5
+    length = 3
+    word1 = "hello"
+    word2 = "wolrd"  # Updated word
+
+    # When
+    grid = generator.generate_grid(width, length)
+    generator.insert_word_in_grid_horizontally(word1, grid)
+    generator.insert_word_in_grid_vertically(word2, grid, start_coords=(0, 2))  # Updated starting coordinates
+
+    # Then
+    # Check if the second word overlaps with the first word at the same letter
+    assert grid[0][2] == 'l'  # Overlapping letter 'l'
+    assert grid[1][2] == 'l'  # Overlapping letter 'l'
+
+    # Check if the rest of the grid cells are empty
+    for row in grid:
+        for cell in row[3:]:
+            assert cell == ''
+
+    generator.print_grid(grid)
