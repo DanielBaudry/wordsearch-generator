@@ -95,31 +95,18 @@ def test_insert_word_in_grid_diagonally():
         for j in range(len(word), length):
             assert grid[j][i] == ''
 
-def test_insert_word_in_grid_overlap():
+def test_insert_word_in_grid_raises_overlap_exception():
     # Given
     generator = GridGenerator()
-    width = 7
-    length = 7
-    word1 = "hello"
-    word2 = "world"
+    width = 5
+    length = 3
+    existing_word = "hello"
+    new_word = "hlelo"  # New word with overlapping letters
 
     # When
     grid = generator.generate_grid(width, length)
-    generator.insert_word_in_grid_horizontally(word1, grid)
-    generator.insert_word_in_grid_vertically(word2, grid)
+    generator.insert_word_in_grid_horizontally(existing_word, grid)
 
     # Then
-    # Check if the words overlap correctly in the grid
-    """ assert grid[0][2] == 'l'  # hello and world overlap on the 'l' letter
-    assert grid[2][0] == 'o'  # hello and world overlap on the 'o' letter
-
-    # Check if the rest of the grid cells are empty
-    for i in range(len(word1)):
-        for j in range(len(word1), width):
-            assert grid[i][j] == ''
-    for i in range(len(word2)):
-        for j in range(len(word2), length):
-            assert grid[j][i] == '' """
-
-    generator.print_grid(grid)
-    assert False
+    with pytest.raises(WordDoesNotFitException):
+        generator.insert_word_in_grid_horizontally(new_word, grid)

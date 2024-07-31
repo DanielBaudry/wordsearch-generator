@@ -30,12 +30,18 @@ class GridGenerator:
 
         for i, char in enumerate(word):
             if vertical:
+                if grid[start_row + i][start_col] != '' and grid[start_row + i][start_col] != char:
+                    raise WordDoesNotFitException("Word overlaps with existing letters in the grid")
                 grid[start_row + i][start_col] = char
             elif diagonal:
+                if grid[start_row + i][start_col + i] != '' and grid[start_row + i][start_col + i] != char:
+                    raise WordDoesNotFitException("Word overlaps with existing letters in the grid")
                 grid[start_row + i][start_col + i] = char
             else:
+                if grid[start_row][start_col + i] != '' and grid[start_row][start_col + i] != char:
+                    raise WordDoesNotFitException("Word overlaps with existing letters in the grid")
                 grid[start_row][start_col + i] = char
-
+                
     def print_grid(self, grid: List[List[str]]) -> None:
         for row in grid:
             print(' '.join(row))
