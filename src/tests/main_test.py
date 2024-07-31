@@ -94,41 +94,32 @@ def test_insert_word_in_grid_diagonally():
             assert grid[i][j] == ''
         for j in range(len(word), length):
             assert grid[j][i] == ''
-def test_insert_word_in_grid_with_existing_word():
+
+def test_insert_word_in_grid_overlap():
     # Given
     generator = GridGenerator()
-    width = 5
-    length = 5
-    existing_word = "hello"
-    new_word = "world"
+    width = 7
+    length = 7
+    word1 = "hello"
+    word2 = "world"
 
     # When
     grid = generator.generate_grid(width, length)
-    generator.insert_word_in_grid_horizontally(existing_word, grid)
+    generator.insert_word_in_grid_horizontally(word1, grid)
+    generator.insert_word_in_grid_vertically(word2, grid)
 
     # Then
-    # Check if the existing word is inserted correctly in the grid
-    for i, char in enumerate(existing_word):
-        assert grid[0][i] == char
-
-    # Check if the new word can be inserted in an empty space
-    start_col = len(existing_word)
-    for i, char in enumerate(new_word):
-        grid[0][start_col + i] = char
+    # Check if the words overlap correctly in the grid
+    """ assert grid[0][2] == 'l'  # hello and world overlap on the 'l' letter
+    assert grid[2][0] == 'o'  # hello and world overlap on the 'o' letter
 
     # Check if the rest of the grid cells are empty
-    for row in grid:
-        for cell in row[start_col + len(new_word):]:
-            assert cell == ''
+    for i in range(len(word1)):
+        for j in range(len(word1), width):
+            assert grid[i][j] == ''
+    for i in range(len(word2)):
+        for j in range(len(word2), length):
+            assert grid[j][i] == '' """
 
-    # Check if the two words have a same matching letter
-    for i in range(min(len(existing_word), len(new_word))):
-        assert existing_word[i] == new_word[i]
-
-    # Assert the full grid as text
-    expected_grid = [
-        ['h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'],
-        ['', '', '', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', '', '']
-    ]
-    assert str(grid) == str(expected_grid)
+    generator.print_grid(grid)
+    assert False

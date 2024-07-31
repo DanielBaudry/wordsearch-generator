@@ -36,17 +36,6 @@ class GridGenerator:
             else:
                 grid[start_row][start_col + i] = char
 
-        for i in range(len(word)):
-            if vertical:
-                for j in range(len(word), len(grid[0])):
-                    grid[start_row + i][start_col] = ''
-            elif diagonal:
-                for j in range(len(word), len(grid[0])):
-                    grid[start_row + i][start_col + j] = ''
-                for j in range(len(word), len(grid)):
-                    grid[start_row + j][start_col + i] = ''
-            else:
-                for j in range(len(word), len(grid[0])):
-                    grid[start_row][start_col + j] = ''
-                for j in range(len(word), len(grid)):
-                    grid[start_row + j][start_col + i] = ''
+    def print_grid(self, grid: List[List[str]]) -> None:
+        for row in grid:
+            print(' '.join(row))
