@@ -1,3 +1,4 @@
+from pprint import pprint
 from typing import List, Tuple
 
 class WordDoesNotFitException(Exception):
@@ -43,5 +44,4 @@ class GridGenerator:
                 grid[start_row][start_col + i] = char    
 
     def print_grid(self, grid: List[List[str]]) -> None:
-        for row in grid:
-            print(' '.join(row))
+        pprint(grid)
